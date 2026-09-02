@@ -1,4 +1,4 @@
-# SanjPill sandbox (K8s compartment) inputs. Do not commit a populated tfvars file.
+# Example inputs only. Do not commit a populated tfvars file.
 tenancy_ocid        = "ocid1.tenancy.oc1..REPLACE"
 compartment_ocid    = "ocid1.compartment.oc1..REPLACE"
 availability_domain = "REPLACE"
@@ -10,9 +10,9 @@ pool_subnet_ocid     = "ocid1.subnet.oc1.phx.REPLACE"
 workload_image_ocid = "ocid1.image.oc1.phx.REPLACE"
 pool_image_ocid     = "ocid1.image.oc1.phx.REPLACE"
 
-# Replace this with the immutable image produced from ../function.
-function_image        = "phx.ocir.io/sanjpill_sandbox/oci-ipa-scaler/oci-ipa-scaler:0.1.0"
-function_image_digest = null
+# Replace these with the immutable image produced from ../function in your registry.
+function_image        = "<region>.ocir.io/<namespace>/oci-ipa-scaler/oci-ipa-scaler:0.1.0"
+function_image_digest = "sha256:<replace-with-image-digest>"
 
 target_pool_size      = 5
 cpu_threshold_percent = 80

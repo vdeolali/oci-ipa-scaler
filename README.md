@@ -12,9 +12,23 @@ The test pool starts at `0`. When the approved CPU alarm transitions from `OK` t
 - `terraform/`: Resource Manager Terraform configuration.
 - `scripts/run-stress.sh`: workload-generator test command.
 
+## Build and registry configuration
+
+The public source contains no internal registry location or sandbox image reference. Build it with the FDK base images approved for the deploying organization, then push the resulting image to that organization's private OCIR repository:
+
+```bash
+docker build \
+  --build-arg FDK_BUILD_IMAGE='<approved-build-image>' \
+  --build-arg FDK_RUN_IMAGE='<approved-run-image>' \
+  -t '<region>.ocir.io/<namespace>/oci-ipa-scaler/oci-ipa-scaler:0.1.0' \
+  function
+```
+
+Set the resulting image URI and digest in the Resource Manager variables. `function/func.yaml` is an Fn CLI template; replace its two example image values only if using `fn deploy`.
+
 ## POC validation
 
-1. Apply the stack in `sanjpill_sandbox`, K8s compartment, `us-phoenix-1`.
+1. Apply the stack in the selected POC compartment and region.
 2. Run `scripts/run-stress.sh` on the separate workload-generator VM.
 3. Verify alarm firing, Function log entry, Compute work request, and target-pool size `0 -> 5`.
 

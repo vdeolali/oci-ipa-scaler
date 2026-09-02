@@ -91,8 +91,10 @@ resource "oci_functions_application" "scaler" {
   compartment_id = var.compartment_ocid
   display_name   = "${local.name_prefix}-app"
   subnet_ids     = [var.function_subnet_ocid]
-  shape          = "GENERIC_X86"
-  freeform_tags  = local.tags
+  # The POC image is built on an Apple Silicon workstation. This shape permits
+  # OCI Functions to run the ARM64 image while retaining x86 compatibility.
+  shape         = "GENERIC_X86_ARM"
+  freeform_tags = local.tags
 }
 
 resource "oci_ons_notification_topic" "cpu_alarm" {

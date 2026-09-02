@@ -1,23 +1,23 @@
 variable "region" {
-  description = "POC region. The approved sandbox target is us-phoenix-1."
+  description = "POC region."
   type        = string
   default     = "us-phoenix-1"
 }
 
 variable "tenancy_ocid" {
-  description = "sanjpill_sandbox tenancy OCID; needed for IAM dynamic-group placement."
+  description = "Tenancy OCID; needed for IAM dynamic-group placement."
   type        = string
 }
 
 variable "compartment_ocid" {
-  description = "K8s compartment OCID. All POC resources are created here."
+  description = "Compartment OCID. All POC resources are created here."
   type        = string
 }
 
 variable "compartment_name" {
-  description = "K8s compartment name, used only in IAM policy statements."
+  description = "Compartment name, used only in IAM policy statements."
   type        = string
-  default     = "K8s"
+  default     = "POC"
 }
 
 variable "availability_domain" {
