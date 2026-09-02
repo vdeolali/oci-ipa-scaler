@@ -3,10 +3,6 @@ tenancy_ocid        = "ocid1.tenancy.oc1..REPLACE"
 compartment_ocid    = "ocid1.compartment.oc1..REPLACE"
 availability_domain = "REPLACE"
 
-function_subnet_ocid = "ocid1.subnet.oc1.phx.REPLACE"
-workload_subnet_ocid = "ocid1.subnet.oc1.phx.REPLACE"
-pool_subnet_ocid     = "ocid1.subnet.oc1.phx.REPLACE"
-
 workload_image_ocid = "ocid1.image.oc1.phx.REPLACE"
 pool_image_ocid     = "ocid1.image.oc1.phx.REPLACE"
 
