@@ -25,19 +25,28 @@ variable "availability_domain" {
   type        = string
 }
 
-variable "function_subnet_ocid" {
-  description = "Existing private subnet for the Functions Application; it needs registry egress."
+variable "vcn_cidr" {
+  description = "CIDR block for the isolated POC VCN."
   type        = string
+  default     = "10.42.0.0/16"
 }
 
-variable "workload_subnet_ocid" {
-  description = "Existing subnet for the dedicated workload-generator VM."
+variable "functions_subnet_cidr" {
+  description = "Private subnet CIDR used only by the Functions Application."
   type        = string
+  default     = "10.42.1.0/24"
 }
 
-variable "pool_subnet_ocid" {
-  description = "Existing subnet for instances created by the isolated POC pool."
+variable "workload_subnet_cidr" {
+  description = "Private subnet CIDR used only by the workload-generator VM."
   type        = string
+  default     = "10.42.2.0/24"
+}
+
+variable "pool_subnet_cidr" {
+  description = "Private subnet CIDR used only by the zero-size test pool."
+  type        = string
+  default     = "10.42.3.0/24"
 }
 
 variable "workload_image_ocid" {
