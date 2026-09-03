@@ -12,6 +12,12 @@ The test pool starts at `0`. Each high-CPU alarm transition adds the configured 
 
 The button opens Resource Manager with the versioned Terraform package already selected. Select the target compartment, provide the function image URI and digest from that tenancy's private OCIR repository, then run Plan and Apply.
 
+## Deploy to OCI
+
+[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/user-attachments/files/31760534/oci-ipa-scaler-rm.zip)
+
+The button opens Resource Manager with the versioned Terraform package already selected. Select the target compartment, provide the function image URI and digest from that tenancy's private OCIR repository, then run Plan and Apply.
+
 ## Package contents
 
 - `function/`: OCI Function source and container definition.
