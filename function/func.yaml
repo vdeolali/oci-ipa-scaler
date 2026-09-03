@@ -1,6 +1,6 @@
 schema_version: 20180708
 name: oci-ipa-scaler
-version: 0.1.0
+version: 0.3.1
 runtime: python
 # Replace these with your organization's approved FDK image locations before fn deploy.
 build_image: registry.example.com/fnproject/python:3.11-dev

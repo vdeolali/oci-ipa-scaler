@@ -3,10 +3,6 @@ tenancy_ocid        = "ocid1.tenancy.oc1..REPLACE"
 compartment_ocid    = "ocid1.compartment.oc1..REPLACE"
 availability_domain = "REPLACE"
 
-function_subnet_ocid = "ocid1.subnet.oc1.phx.REPLACE"
-workload_subnet_ocid = "ocid1.subnet.oc1.phx.REPLACE"
-pool_subnet_ocid     = "ocid1.subnet.oc1.phx.REPLACE"
-
 workload_image_ocid = "ocid1.image.oc1.phx.REPLACE"
 pool_image_ocid     = "ocid1.image.oc1.phx.REPLACE"
 
@@ -14,5 +10,9 @@ pool_image_ocid     = "ocid1.image.oc1.phx.REPLACE"
 function_image        = "<region>.ocir.io/<namespace>/oci-ipa-scaler/oci-ipa-scaler:0.1.0"
 function_image_digest = "sha256:<replace-with-image-digest>"
 
-target_pool_size      = 5
+scale_out_step_size   = 1
 cpu_threshold_percent = 80
+
+# Scale back to zero only after CPU stays at or below this lower threshold.
+scale_in_cpu_threshold_percent = 10
+scale_in_target_pool_size       = 0

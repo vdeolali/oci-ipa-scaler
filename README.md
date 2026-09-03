@@ -2,9 +2,15 @@
 
 This package implements an isolated sandbox POC:
 
-`workload VM (stress-ng) -> OCI Monitoring alarm -> Notifications topic -> OCI Function -> UpdateInstancePool`
+`workload VM (stress-ng) -> OCI Monitoring alarms -> Notifications topic -> OCI Function -> UpdateInstancePool`
 
-The test pool starts at `0`. When the approved CPU alarm transitions from `OK` to `FIRING`, the Function sets it to the configured POC target (`5` by default). It does not touch the customer pool or scheduled autoscaling policy.
+The test pool starts at `0`. Each high-CPU alarm transition adds the configured user-supplied scale-out step (`1` by default) to the current target. A separate sustained low-CPU alarm transitions it back to the scale-in target (`0` by default). The Function acts only on an alarm's `OK_TO_FIRING` transition, preventing repeated changes while an alarm remains firing.
+
+## Deploy to OCI
+
+[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/user-attachments/files/31760534/oci-ipa-scaler-rm.zip)
+
+The button opens Resource Manager with the versioned Terraform package already selected. Select the target compartment, provide the function image URI and digest from that tenancy's private OCIR repository, then run Plan and Apply.
 
 ## Package contents
 
@@ -28,8 +34,9 @@ Set the resulting image URI and digest in the Resource Manager variables. `funct
 
 ## POC validation
 
-1. Apply the stack in the selected POC compartment and region.
+1. Apply the stack in the selected POC compartment and region. It creates its own private VCN, three private subnets, and outbound-only NAT gateway; it does not reuse an existing network.
 2. Run `scripts/run-stress.sh` on the separate workload-generator VM.
-3. Verify alarm firing, Function log entry, Compute work request, and target-pool size `0 -> 5`.
+3. Set `scale_out_step_size` in Resource Manager, then verify high-CPU alarm firing, Function log entry, Compute work request, and target-pool size `0 -> <step>`.
+4. Stop the workload and verify the sustained low-CPU alarm returns the target-pool size `<step> -> 0`.
 
 For production, IPA must invoke the Function when its desired pool size changes, passing the approved pool key and desired size. The CPU alarm is POC-only.

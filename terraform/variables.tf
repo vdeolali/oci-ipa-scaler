@@ -25,19 +25,33 @@ variable "availability_domain" {
   type        = string
 }
 
-variable "function_subnet_ocid" {
-  description = "Existing private subnet for the Functions Application; it needs registry egress."
+variable "ssh_public_key" {
+  description = "SSH public key authorized on the disposable POC workload VM."
   type        = string
 }
 
-variable "workload_subnet_ocid" {
-  description = "Existing subnet for the dedicated workload-generator VM."
+variable "vcn_cidr" {
+  description = "CIDR block for the isolated POC VCN."
   type        = string
+  default     = "10.42.0.0/16"
 }
 
-variable "pool_subnet_ocid" {
-  description = "Existing subnet for instances created by the isolated POC pool."
+variable "functions_subnet_cidr" {
+  description = "Private subnet CIDR used only by the Functions Application."
   type        = string
+  default     = "10.42.1.0/24"
+}
+
+variable "workload_subnet_cidr" {
+  description = "Private subnet CIDR used only by the workload-generator VM."
+  type        = string
+  default     = "10.42.2.0/24"
+}
+
+variable "pool_subnet_cidr" {
+  description = "Private subnet CIDR used only by the zero-size test pool."
+  type        = string
+  default     = "10.42.3.0/24"
 }
 
 variable "workload_image_ocid" {
@@ -92,18 +106,40 @@ variable "pool_memory_gbs" {
 }
 
 variable "cpu_threshold_percent" {
-  description = "CPU percentage on the workload VM that fires the POC alarm."
+  description = "CPU percentage on the workload VM that triggers scale-out."
   type        = number
   default     = 80
 }
 
-variable "target_pool_size" {
-  description = "Fixed target applied by the POC Function after its approved alarm fires."
+variable "scale_out_step_size" {
+  description = "Number of instances added to the current pool target by each scale-out alarm transition."
   type        = number
-  default     = 5
+  default     = 1
 
   validation {
-    condition     = var.target_pool_size >= 1
-    error_message = "target_pool_size must be at least one."
+    condition     = var.scale_out_step_size >= 1
+    error_message = "scale_out_step_size must be at least one."
+  }
+}
+
+variable "scale_in_cpu_threshold_percent" {
+  description = "CPU percentage at or below which the POC triggers scale-in."
+  type        = number
+  default     = 10
+
+  validation {
+    condition     = var.scale_in_cpu_threshold_percent >= 0 && var.scale_in_cpu_threshold_percent < 100
+    error_message = "scale_in_cpu_threshold_percent must be from 0 through 99."
+  }
+}
+
+variable "scale_in_target_pool_size" {
+  description = "Target pool size applied by the scale-in alarm. Set to zero for the POC."
+  type        = number
+  default     = 0
+
+  validation {
+    condition     = var.scale_in_target_pool_size >= 0
+    error_message = "scale_in_target_pool_size cannot be negative."
   }
 }
